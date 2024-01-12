@@ -22,6 +22,22 @@ xml_tree.SubElement(channel_element,'language').text=yaml_data['language']
 xml_tree.SubElement(channel_element,'link').text=link_prefix
 xml_tree.SubElement(channel_element,'itunes:category',{'text':yaml_data['category']})
 
+for item in yaml_data['item']:
+     item_element = xml_tree.SubElement(channel_element,'item')
+     xml_tree.SubElement(item_element,'itunes:title').text=item['title']
+     xml_tree.SubElement(item_element,'itunes:author').text=yaml_data['author']
+     xml_tree.SubElement(item_element,'description').text=item['description']
+     xml_tree.SubElement(item_element,'pubDate').text=item['published']
+    
+     enclosure= xml_tree.SubElement(item_element,'enclosure',
+     {   'url': link_prefix + item ['file'],
+        'type': 'audio/mpeg',
+        'length': item['length']  
+     })
+
+
+
+
 
 output_tree =xml_tree.ElementTree(rss_element)
 output_tree.write('podcast.xml',encoding='UTF-8', xml_declaration=True)
